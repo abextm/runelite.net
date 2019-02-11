@@ -12,7 +12,7 @@ import Redirect from './redirect'
 import Loader from './loader'
 import Async from './async'
 import { getStargazers } from '../modules/git'
-import { isLoggedIn, login } from '../modules/session'
+import { isLoggedIn, login } from '../modules/account'
 
 const App = ({
   loading,
@@ -77,7 +77,7 @@ export default connect(
     stars: getStargazers(state),
     loggedIn: isLoggedIn(state),
     ...state.app,
-    ...state.session
+    ...state.account
   }),
   dispatch => bindActionCreators({ login }, dispatch)
 )(App)
