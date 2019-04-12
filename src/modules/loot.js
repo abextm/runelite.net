@@ -1,4 +1,3 @@
-import { uniq, concat } from 'ramda'
 import { createActions, handleActions } from 'redux-actions'
 import api from '../api'
 import { getLatestRelease } from './git'
@@ -26,6 +25,7 @@ export const {
 
       const chunkSize = 2000
       let offset = 0
+      let allLoot = []
 
       while (true) {
         const newLoot = await runeliteApi(
@@ -57,7 +57,8 @@ export const {
         }
 
         offset += length
-        dispatch(setLoot(result))
+        allLoot = allLoot.concat(result)
+        dispatch(setLoot(allLoot))
 
         if (length !== chunkSize) {
           break
@@ -77,7 +78,7 @@ export default handleActions(
   {
     [setLoot]: (state, { payload }) => ({
       ...state,
-      data: uniq(concat(state.data, payload))
+      data: payload
     }),
     [setLootRange]: (state, { payload }) => ({
       ...state,
